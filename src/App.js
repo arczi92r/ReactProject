@@ -1,51 +1,44 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import ToDoListItem from './components/ToDoListItem/index.js';
+
+
+// alternatywny sposób na tworzenie komponentów , 
+//functional components , simple componentnst
+
+const NewToDoForm = (props) => (
+  <div>
+  <input type="text" onChange={props.onChange} value={props.draft}/>
+        <input type="button" value="add" onClick={props.onSubmit2} />
+  </div> 
+
+);
 
 class App extends Component {
+  myTasks =  [{text:'samochod', done:false}];
+   
   render() {
     return (
       <div className="App">
-    <ToDoList title='My to do list' tasks={['samochod', 'telefon']} ></ToDoList>
+      <ToDoList title='My to do list' tasks={this.myTasks}></ToDoList>
       </div>
     );
   }
 } 
-class ToDoListItem extends Component{
-  static defaultProps = {
-    done:true
-  }
-  
-  state = {
-    done: this.props.done
-  }
 
-  toggleDone = () => {
-    this.setState({done: !this.state.done})
-  }
-  render() {
-    const text = this.props.task;
-    console.log(text);
-    return (
-      <div onClick={this.toggleDone} className={this.state.done ? 'doneToDo' : '' }>
-      <p>
-        
-        {text}
-      </p>
-      </div>
-    );
-  }
-}
 class ToDoList extends Component{
   state = {
     tasks: this.props.tasks,
     draft:''
   };
   addToList = () =>{
-    //const {tasks, draft} = this.state;
+    console.log("siemka");
+    const {tasks, draft} = this.state;
+    console.log(this.state.tasks);
 
-  let list = this.state.tasks;
-  list.push(this.state.draft);
+  let list = tasks;
+  list.push({text:draft, done:false});
 
   this.setState({tasks: list , draft:''});
  
@@ -55,13 +48,16 @@ class ToDoList extends Component{
     console.log(event.target.value);
       this.setState({draft:event.target.value});
   }
-  render(){
+  render() {
+const {title}  = this.props;
+
+    const {tasks, draft} = this.state;
+        
     return(
       <div>
-        <h1>{this.props.title}</h1>
-        {this.state.tasks.map(task => <ToDoListItem task={task}></ToDoListItem>)}
-        <input type="text" onChange={this.updateDraft} value={this.state.draft}/>
-        <input type="button" value="add" onClick={this.addToList} />
+        <h1>{title}</h1>
+        {tasks.map(task => <ToDoListItem text={task.text} done={task.done}/> )}
+        <NewToDoForm onSubmit2={this.addToList} onChange={this.updateDraft} draft={draft} />
         </div>
     )
   }
