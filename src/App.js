@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import ToDoListItem from './components/ToDoListItem/index.js';
-
+import LifeCyccleCompoent from './components/LifeCycleCompoent/LifeCycelCompoent.js'
 
 // alternatywny sposób na tworzenie komponentów , 
 //functional components , simple componentnst
@@ -22,25 +22,23 @@ class App extends Component {
     return (
       <div className="App">
       <ToDoList title='My to do list' tasks={this.myTasks}></ToDoList>
+      <LifeCyccleCompoent/>
       </div>
     );
   }
 } 
 
 class ToDoList extends Component{
+ 
   state = {
     tasks: this.props.tasks,
     draft:''
   };
   addToList = () =>{
-    console.log("siemka");
     const {tasks, draft} = this.state;
-    console.log(this.state.tasks);
-
-  let list = tasks;
-  list.push({text:draft, done:false});
-
-  this.setState({tasks: list , draft:''});
+    let list = tasks;
+   list.push({text:draft, done:false});
+   this.setState({tasks: list , draft:''});
  
   }
   
@@ -49,8 +47,7 @@ class ToDoList extends Component{
       this.setState({draft:event.target.value});
   }
   render() {
-const {title}  = this.props;
-
+    const {title}  = this.props;
     const {tasks, draft} = this.state;
         
     return(
